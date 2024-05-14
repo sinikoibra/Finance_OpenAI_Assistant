@@ -195,8 +195,10 @@ class credit_functions:
         credit_func_output_dict = credit_functions.final_cost_function(**param_dict)
 
         final_downpymnt_amt=credit_func_output_dict["final_savings_percent_fr_downpymnt"]*0.01*param_dict["savings"]
-
+        
         EMI = credit_functions.calculate_loan_amount(param_dict["cost"] - final_downpymnt_amt,param_dict["Loan_interest_rate"],credit_func_output_dict["final_tenure"])/(credit_func_output_dict["final_tenure"]*12)
+
+        EMI_without_invest = credit_functions.calculate_loan_amount(param_dict["cost"] - param_dict["savings"],param_dict["Loan_interest_rate"],credit_func_output_dict["final_tenure_no_invest"])/(credit_func_output_dict["final_tenure_no_invest"]*12)
 
         if credit_func_output_dict["final_cost_no_invest"] <= credit_func_output_dict["final_cost"]:
             output_str = f"""
@@ -213,10 +215,10 @@ class credit_functions:
             {param_dict["Loan_interest_rate"]}% (defined by user) for a tenure of {credit_func_output_dict["final_tenure"]} years. The EMI will be equal to ₹{EMI} \n
             - After making the downpayment user will be left with savings of ₹{param_dict["savings"] - final_downpymnt_amt} which needs to be invested for the same tenure of {credit_func_output_dict["final_tenure"]} years at a return rate of {param_dict["Investment_interest_rate"]}% (this value is chosen as per user's risk taking capacity)
 
-            In case the user choses not to invest and to give the entire savings as downpayment and take loan for the rest of the amount of ₹{param_dict["cost"]-param_dict["savings"]} for a tenure of {credit_func_output_dict["final_tenure_no_invest"]} years
-            then the product will cost him ₹{credit_func_output_dict["final_cost_no_invest"]}
+            Inform the user if he choose not to invest and to give the entire savings as downpayment then he should take loan of ₹{param_dict["cost"]-param_dict["savings"]} for a tenure of {credit_func_output_dict["final_tenure_no_invest"]} years at an emi of ₹{EMI_without_invest}
+            and the product will cost him ₹{credit_func_output_dict["final_cost_no_invest"]}
 
-            Finally by investing and taking a larger loan the user will save around ₹{credit_func_output_dict["final_cost_no_invest"] - credit_func_output_dict["final_cost"]}
+            Inform the user that by investing and taking a larger loan the user will save around ₹{credit_func_output_dict["final_cost_no_invest"] - credit_func_output_dict["final_cost"]}
 
             If the user wants lower cost for the product than the user can try to increase the savings amount or emi paying capacity
             """

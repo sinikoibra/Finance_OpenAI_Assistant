@@ -8,7 +8,7 @@ client = OpenAI(api_key = Openai_API_key)
 #assistant = create_or_retrieve_assistant(client)
 #thread = create_thread(client)
 
-st.title("Financial chatbot")
+st.title("Financial Assistant")
 
 if "assistant" not in st.session_state:
     st.session_state["assistant"] = create_or_retrieve_assistant(client)
